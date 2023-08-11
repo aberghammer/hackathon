@@ -8,14 +8,16 @@ import 'hardhat-contract-sizer';
 import { config as dotEnvConfig } from "dotenv";
 dotEnvConfig();
 
-const ETHERSCAN = process.env.ES_API || "please provide etherscan key...";
-const POLYGONSCAN = process.env.PS_API || "please provide etherscan key...";
+const ETHERSCAN = process.env.ETHERSCAN_API_KEY || "please provide etherscan key...";
+const POLYGONSCAN = process.env.POLYGONSCAN_API_KEY || "please provide etherscan key...";
 
 const GOERLI = `https://goerli.infura.io/v3/${process.env.INFURA}`;
-const MAINNET = `https://mainnet.infura.io/v3/${process.env.INFURA}`;
-const SEPOLIA = `https://sepolia.infura.io/v3/${process.env.INFURA}`;
-
-const MUMBAI = `https://polygon-mumbai.infura.io/v3/${process.env.INFURA}`;
+// const MAINNET = `https://mainnet.infura.io/v3/${process.env.INFURA}`;
+// const SEPOLIA = `https://sepolia.infura.io/v3/${process.env.INFURA}`;
+// const MUMBAI = `https://polygon-mumbai.infura.io/v3/${process.env.INFURA}`;
+const MAINNET = process.env.RPC_URL_MAINNET || "please provide rpc url mainnet...";
+const SEPOLIA = process.env.RPC_URL_SEPOLIA || "please provide rpc url sepolia...";
+const MUMBAI = process.env.RPC_URL_MUMBAI || "please provide rpc url mumbai...";
 
 
 

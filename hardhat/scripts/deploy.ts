@@ -6,20 +6,20 @@ import { verify } from './verify';
 
 async function main() {
 
-  const DevContract = await ethers.getContractFactory('DevContract');
-  const devContract = await DevContract.deploy();
+  const CheckMade = await ethers.getContractFactory('CheckMade');
+  const checkMade = await CheckMade.deploy();
 
-  await devContract.waitForDeployment();
-  const devContractAddress = await devContract.getAddress();
+  await checkMade.waitForDeployment();
+  const checkMadeAddress = await checkMade.getAddress();
 
   console.log("----------------------------------------------------");
   console.log(`⛓️ Deploying Contract...`);
 
-  console.log('devContract deployed to:', devContractAddress);
+  console.log('checkMade deployed to:', checkMadeAddress);
 
 
 
-  await verify(devContractAddress)
+  await verify(checkMadeAddress)
 
   console.log("Contract verified")
 
