@@ -1,0 +1,34 @@
+{
+    "manifest_version": 3,
+    "name": "Chrome Extension",
+    "description": "Start gathering your data1",
+    "version": "1.0.0",
+    "icons": {
+        "16": "extension.png",
+        "48": "32.png",
+        "128": "extension.png"
+    },
+    "action": {
+        "default_title": "Ad - X browser extension",
+        "default_popup": "newTab.html"
+    },
+    "permissions": [
+        "tabs",
+        "bookmarks",
+        "unlimitedStorage", 
+        "storage"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["contentScript.js"]
+        }, 
+        {
+            "matches": ["https://*.facebook.com/*"], 
+            "js": ["facebookScript.js"]
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "jsx": "react", 
+        "module": "es6", 
+        "target": "es6", 
+        "moduleResolution": "node", 
+        "esModuleInterop": true,
+        "baseUrl": "src", 
+        "paths": {
+            "test-utils": ["./utils/test-utils.ts"]
+        },
+    }, 
+    "include":[
+        "src/**/*.ts",  
+        "src/**/*.tsx", 
+        "src/**/*.js", 
+         "src/tabs/components/api/providers.js", "src/tabs/components/api/facebookStore.js"    ], 
+    "exclude": [
+        "node_modules"
+    ]
+}
