@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { MerkleTree } from "merkletreejs";
 
-import { CheckMade__factory, CheckMade } from "../typechain-types";
+import { CheckMade__factory, CheckMade, CheckMate, CheckMate__factory } from "../typechain-types";
 
 describe("CheckMade Tests", () => {
     let checkMade: CheckMade;
@@ -19,6 +19,12 @@ describe("CheckMade Tests", () => {
         const checkMade = await new CheckMade__factory(owner).deploy();
         await checkMade.waitForDeployment();
 
+
+        const checkMate = await new CheckMate__factory(owner).deploy(checkMade.target);
+        await checkMate.waitForDeployment();
+
+        await checkMade.setCheckMate(checkMate.target);
+
         /**
          * fixture Variables used for the tests
          */
@@ -32,6 +38,7 @@ describe("CheckMade Tests", () => {
             team1,
             team2,
             checkMade: checkMade,
+            checkMate: checkMate,
         };
     }
 
@@ -40,9 +47,108 @@ describe("CheckMade Tests", () => {
     describe('CheckMade Test', async function () {
         it('msg.sender should be set as check owner', async function () {
             const { checkMade, addr1 } = await loadFixture(deployTokenFixture);
+            
             const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"));
             await checkMade.connect(addr1).createCheck(hash)
             expect(await checkMade.getSignerAddressForCheck(hash)).to.be.equal(addr1.address);
+
+        });
+
+        it('should be impossible to change the CheckMate contract reference', async function () {
+            const { checkMade, addr1 } = await loadFixture(deployTokenFixture);
+            
+            const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"));
+            
+            await expect(checkMade.connect(addr1).setCheckMate(addr1)).to.be.revertedWith("CheckMate already set");
+            
+
+        });
+
+        it('A CheckMate should be generated for the signer', async function () {
+            const { checkMade, checkMate, addr1 } = await loadFixture(deployTokenFixture);
+            
+            const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"));
+            await checkMade.connect(addr1).createCheck(hash)
+            expect(await checkMate.connect(addr1).balanceOf(addr1)).to.be.equal(1);
+
+
+        });
+
+        it('A CheckMate should start at the lowes level', async function () {
+            const { checkMade, checkMate, addr1 } = await loadFixture(deployTokenFixture);
+            
+            const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"));
+            await checkMade.connect(addr1).createCheck(hash)
+            
+            const tokenId = await checkMate.connect(addr1).getOwnedTokenId(addr1);
+            expect(await checkMate.connect(addr1).getChecks(tokenId)).to.be.equal("1");
+            expect(await checkMate.connect(addr1).getName(tokenId)).to.be.equal("CheckMate");
+            expect(await checkMate.connect(addr1).getColor(tokenId)).to.be.equal("black");
+
+        });
+
+        it('A CheckMate should level up after the second check', async function () {
+            const { checkMade, checkMate, addr1 } = await loadFixture(deployTokenFixture);
+            
+            
+            for (let i = 1; i <= 2; i++) {
+                const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"+i));
+                await checkMade.connect(addr1).createCheck(hash)
+            }
+
+            const tokenId = await checkMate.connect(addr1).getOwnedTokenId(addr1);
+            
+            expect(await checkMate.connect(addr1).getChecks(tokenId)).to.be.equal("2");
+            expect(await checkMate.connect(addr1).getName(tokenId)).to.be.equal("Happy CheckMate");
+            expect(await checkMate.connect(addr1).getColor(tokenId)).to.be.equal("blue");
+
+        });
+
+        it('A CheckMate should level up again after the 6th check', async function () {
+            const { checkMade, checkMate, addr1 } = await loadFixture(deployTokenFixture);
+            
+            for (let i = 1; i <= 6; i++) {
+                const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"+i));
+                await checkMade.connect(addr1).createCheck(hash)
+            }
+
+            const tokenId = await checkMate.connect(addr1).getOwnedTokenId(addr1);
+            
+            expect(await checkMate.connect(addr1).getChecks(tokenId)).to.be.equal("6");
+            expect(await checkMate.connect(addr1).getName(tokenId)).to.be.equal("Energetic CheckMate");
+            expect(await checkMate.connect(addr1).getColor(tokenId)).to.be.equal("red");
+
+        });
+
+        it('A CheckMate should level up again after the 51th check', async function () {
+            const { checkMade, checkMate, addr1 } = await loadFixture(deployTokenFixture);
+            
+            for (let i = 1; i <= 51; i++) {
+                const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"+i));
+                await checkMade.connect(addr1).createCheck(hash)
+            }
+
+            const tokenId = await checkMate.connect(addr1).getOwnedTokenId(addr1);
+            
+            expect(await checkMate.connect(addr1).getChecks(tokenId)).to.be.equal("51");
+            expect(await checkMate.connect(addr1).getName(tokenId)).to.be.equal("Motivated CheckMate");
+            expect(await checkMate.connect(addr1).getColor(tokenId)).to.be.equal("yellow");
+
+        });
+
+        it('A CheckMate should level up again after the 501th check', async function () {
+            const { checkMade, checkMate, addr1 } = await loadFixture(deployTokenFixture);
+            
+            for (let i = 1; i <= 501; i++) {
+                const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"+i));
+                await checkMade.connect(addr1).createCheck(hash)
+            }
+
+            const tokenId = await checkMate.connect(addr1).getOwnedTokenId(addr1);
+            
+            expect(await checkMate.connect(addr1).getChecks(tokenId)).to.be.equal("501");
+            expect(await checkMate.connect(addr1).getName(tokenId)).to.be.equal("CheckMate on fire");
+            expect(await checkMate.connect(addr1).getColor(tokenId)).to.be.equal("white");
 
         });
 
@@ -124,7 +230,7 @@ describe("CheckMade Tests", () => {
             const hash4= ethers.keccak256(ethers.toUtf8Bytes("Test4"));
             await checkMade.connect(addr1).createCheckWithMetaData(hash, "TestUrl", "TestDescription", [hash1, hash2, hash3, hash4])
             expect(await checkMade.getSignerAddressForCheck(hash)).to.be.equal(addr1.address);
-            
+
             const referenceHashes = await checkMade.getReferenceHashesForCheck(hash);
             expect(referenceHashes.length).to.be.equal(4);
             expect(referenceHashes[0]).to.be.equal(hash1);
