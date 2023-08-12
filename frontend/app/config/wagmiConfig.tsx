@@ -1,7 +1,7 @@
 "use client"
 import { WagmiConfig, createConfig, configureChains } from 'wagmi'
 import { createPublicClient, http } from 'viem'
-import { mainnet, sepolia, goerli, polygonMumbai, polygon, zkSync } from 'wagmi/chains'
+import { mainnet, sepolia, goerli, polygonMumbai, polygon, zkSync, polygonZkEvmTestnet } from 'wagmi/chains'
 import { infuraProvider } from 'wagmi/providers/infura';
 import { publicProvider } from 'wagmi/providers/public';
 import { connectorsForWallets, getDefaultWallets } from '@rainbow-me/rainbowkit';
@@ -9,7 +9,7 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 
 
 const { chains, publicClient } = configureChains(
-    [sepolia, polygonMumbai, mainnet, zkSync],
+    [sepolia, polygonMumbai, mainnet, polygonZkEvmTestnet],
     [
         infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_KEY != undefined ? process.env.NEXT_PUBLIC_INFURA_KEY : "NO KEY", }),
         publicProvider()
