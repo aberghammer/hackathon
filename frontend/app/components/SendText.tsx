@@ -177,7 +177,7 @@ export default function SendText() {
             < DeployingModal isOpen={isOpen} />
             {isConnected ? (
 
-                <div className='flex flex-row  flex-wrap items-center justify-center  space-x-5'>
+                <div className='flex flex-row  flex-wrap items-center justify-center  space-x-5 space-y-5'>
 
                     <div className='flex justify-center bg-white  rounded-xl shadow-lg p-8  '>
 
