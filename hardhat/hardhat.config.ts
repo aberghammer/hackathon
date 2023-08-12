@@ -13,13 +13,14 @@ const POLYGONSCAN = process.env.POLYGONSCAN_API_KEY || "please provide polygonsc
 const PLOyGONSCAN_ZKEVM = process.env.POLYGONSCAN_ZKEVM_API_KEY || "please provide polygonscan zkevm api key...";
 
 const GOERLI = `https://goerli.infura.io/v3/${process.env.INFURA}`;
-// const MAINNET = `https://mainnet.infura.io/v3/${process.env.INFURA}`;
-// const SEPOLIA = `https://sepolia.infura.io/v3/${process.env.INFURA}`;
-// const MUMBAI = `https://polygon-mumbai.infura.io/v3/${process.env.INFURA}`;
-const MAINNET = process.env.RPC_URL_MAINNET || "please provide rpc url mainnet...";
-const SEPOLIA = process.env.RPC_URL_SEPOLIA || "please provide rpc url sepolia...";
-const MUMBAI = process.env.RPC_URL_MUMBAI || "please provide rpc url mumbai...";
-const POLYGON_ZK_TEST= process.env.RPC_URL_POLYGON_ZK_TEST || "please provide rpc url mumbai...";
+const MAINNET = `https://mainnet.infura.io/v3/${process.env.INFURA}`;
+const SEPOLIA = `https://sepolia.infura.io/v3/${process.env.INFURA}`;
+const MUMBAI = `https://polygon-mumbai.infura.io/v3/${process.env.INFURA}`;
+const POLYGON_ZK_TEST = "";
+//const MAINNET = process.env.RPC_URL_MAINNET || "please provide rpc url mainnet...";
+//const SEPOLIA = process.env.RPC_URL_SEPOLIA || "please provide rpc url sepolia...";
+//const MUMBAI = process.env.RPC_URL_MUMBAI || "please provide rpc url mumbai...";
+// const POLYGON_ZK_TEST = process.env.RPC_URL_POLYGON_ZK_TEST || "please provide rpc url mumbai...";
 
 
 
@@ -61,7 +62,7 @@ const config: HardhatUserConfig = {
       chainId: 1442,
     }
   },
-  
+
 
   typechain: {
     outDir: "typechain-types",
