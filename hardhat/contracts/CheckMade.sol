@@ -17,10 +17,13 @@ event CheckCreated(address indexed _from, bytes32 indexed _hash);
     CheckMate public checkMate;
 
     constructor() {
-        checkMate = new CheckMate(address(this));
     }
 
 
+    function setCheckMate(address _checkMate) public {
+        require(checkMate == CheckMate(address(0)), "CheckMate already set");
+        checkMate = CheckMate(_checkMate);
+    }
 
     mapping(bytes32 => address) public hashToAddress;
     mapping(bytes32 => CheckMetaData) public hashToCheckMetaData;

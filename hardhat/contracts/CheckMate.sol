@@ -25,6 +25,10 @@ contract CheckMate is ERC721URIStorage {
 
     }
 
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721URIStorage) returns (bool) {
+        return super.supportsInterface(interfaceId);
+    }
+
     function mint(address _to) public {
         require(msg.sender == checkMadeContract, "Only the CheckMade contract can mint");
         require(balanceOf(_to) == 0, "Only one CheckMate per address");

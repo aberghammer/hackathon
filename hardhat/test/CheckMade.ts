@@ -19,7 +19,11 @@ describe("CheckMade Tests", () => {
         const checkMade = await new CheckMade__factory(owner).deploy();
         await checkMade.waitForDeployment();
 
-        const checkMate = CheckMate__factory.connect(await checkMade.checkMate());
+
+        const checkMate = await new CheckMate__factory(owner).deploy(checkMade.target);
+        await checkMate.waitForDeployment();
+
+        await checkMade.setCheckMate(checkMate.target);
 
         /**
          * fixture Variables used for the tests
@@ -47,6 +51,16 @@ describe("CheckMade Tests", () => {
             const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"));
             await checkMade.connect(addr1).createCheck(hash)
             expect(await checkMade.getSignerAddressForCheck(hash)).to.be.equal(addr1.address);
+
+        });
+
+        it('should be impossible to change the CheckMate contract reference', async function () {
+            const { checkMade, addr1 } = await loadFixture(deployTokenFixture);
+            
+            const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"));
+            
+            await expect(checkMade.connect(addr1).setCheckMate(addr1)).to.be.revertedWith("CheckMate already set");
+            
 
         });
 
