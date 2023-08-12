@@ -115,6 +115,27 @@ describe("CheckMade Tests", () => {
             expect(referenceHashes[3]).to.be.equal(hash4);      
         });
 
+        it('meta data can be added during the initial creation of the check', async function () {
+            const { checkMade, addr1, addr2 } = await loadFixture(deployTokenFixture);
+            const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"));
+            const hash1= ethers.keccak256(ethers.toUtf8Bytes("Test1"));
+            const hash2= ethers.keccak256(ethers.toUtf8Bytes("Test2"));
+            const hash3= ethers.keccak256(ethers.toUtf8Bytes("Test3"));
+            const hash4= ethers.keccak256(ethers.toUtf8Bytes("Test4"));
+            await checkMade.connect(addr1).createCheckWithMetaData(hash, "TestUrl", "TestDescription", [hash1, hash2, hash3, hash4])
+            expect(await checkMade.getSignerAddressForCheck(hash)).to.be.equal(addr1.address);
+            
+            const referenceHashes = await checkMade.getReferenceHashesForCheck(hash);
+            expect(referenceHashes.length).to.be.equal(4);
+            expect(referenceHashes[0]).to.be.equal(hash1);
+            expect(referenceHashes[1]).to.be.equal(hash2);
+            expect(referenceHashes[2]).to.be.equal(hash3);	
+            expect(referenceHashes[3]).to.be.equal(hash4);  
+            
+            expect(await checkMade.getDescriptionForCheck(hash)).to.be.equal("TestDescription");
+            expect(await checkMade.getContentUrlForCheck(hash)).to.be.equal("TestUrl"); 
+        });
+
     })
 
     describe('CheckMade Test', async function () {
