@@ -25,7 +25,7 @@ export default function SendText() {
     const [description, setDescription] = useState("")
     const [referenceHash, setReferenceHash] = useState<PrefixedHexString[]>([])
     const [imageData, setImageData] = useState(imageSVG)
-    const { address } = useAccount();
+    const { address, isConnected } = useAccount();
     const [isDeploying, setIsDeploying] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -168,33 +168,37 @@ export default function SendText() {
     return (
         <main className="flex flex-col lg:flex-row items-center justify-center px-4 space-x-4 space-y-4 sm:space-y-0">
             <DeployingModal isOpen={isOpen} />
-            <div className='flex flex-col justify-center bg-white lg:p-12 rounded-xl shadow-lg w-full p-8 md:1/2 lg:w-1/3'>
-                <h1 className="text-2xl font-bold mb-8 text-center text-blue-900">Welcome to Our Platform</h1>
-                <div className='flex flex-col'>
-                    <div className="mb-8">
-                        <label className='block text-gray-600 font-medium'>Enter your text here:</label>
-                        <div className='h-96 text-black mb-16'>
-                            <TextBoxComponent value={content} onChange={updateContent} />
+            {isConnected ? (<div>
+                <div className='flex flex-col justify-center bg-white lg:p-12 rounded-xl shadow-lg w-full p-8 md:1/2 lg:w-1/3'>
+                    <h1 className="text-2xl font-bold mb-8 text-center text-blue-900">Welcome to Our Platform</h1>
+                    <div className='flex flex-col'>
+                        <div className="mb-8">
+                            <label className='block text-gray-600 font-medium'>Enter your text here:</label>
+                            <div className='h-96 text-black mb-16'>
+                                <TextBoxComponent value={content} onChange={updateContent} />
+                            </div>
                         </div>
+                        <div className='h-16 mb-8'>
+                            <label className='block text-gray-600 font-medium'>Description:</label>
+                            <EnterDescription value={description} onChange={setDescription} />
+                        </div>
+                        <div className="mb-16">
+                            <label className='block text-gray-600 font-medium'>URL:</label>
+                            <EnterUrl value={myUrl} onChange={setUrl} />
+                        </div>
+                        {submitButton}
                     </div>
-                    <div className='h-16 mb-8'>
-                        <label className='block text-gray-600 font-medium'>Description:</label>
-                        <EnterDescription value={description} onChange={setDescription} />
-                    </div>
-                    <div className="mb-16">
-                        <label className='block text-gray-600 font-medium'>URL:</label>
-                        <EnterUrl value={myUrl} onChange={setUrl} />
-                    </div>
-                    {submitButton}
+
                 </div>
 
-            </div>
+                <div className='flex flex-col justify-center items-center w-full lg:w-1/3'>
+                    <Image src={imageData} alt="My NFT" width={800} height={800} />
 
-            <div className='flex flex-col justify-center items-center w-full lg:w-1/3'>
-                <Image src={imageData} alt="My NFT" width={800} height={800} />
+                </div>
+            </div>) : (<div className='w-full h-96 flex justify-center items-center text-4xl'>Please connect your wallet first.</div>)
+            }
 
-            </div>
-        </main>
+        </main >
     )
 
 }
