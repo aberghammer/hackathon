@@ -15,12 +15,21 @@
     "permissions": [
         "tabs",
         "bookmarks",
-        "unlimitedStorage", 
-        "storage"
+        "storage", 
+        "activeTab",
+        "webRequest", 
+        "scripting", 
+        "contextMenus"
     ],
-    "background": {
-        "service_worker": "background.js"
-    },
+    "host_permissions": [
+        "https://api.dataponte.com/*", 
+        "https://www.dummyjson.com/*", 
+        "http://localhost:4000/*"
+      ],
+      "background": {
+        "service_worker": "background.js",
+        "type": "module"
+      },
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
