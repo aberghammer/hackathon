@@ -5,29 +5,23 @@ chrome.runtime.onInstalled.addListener(() => {
 //wawnt to read all the data send from the contentScript
 chrome.runtime.onMessage.addListener(function (request, sender) {
   console.log(request);
-  getImagesFromPage(request);
   return true;
 });
 
-function getImagesFromPage(data) {
-  // Open a connection to the database
-  const request = indexedDB.open('myFacebookStore', 1);
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.message === 'getData') {
+    // Do something with the request or just return data
+    sendResponse({ data: "Here's the data you asked for!" });
+  }
 
-  // Set up the database schema
-  request.onupgradeneeded = function (event: any) {
-    const db = event.target.result;
-    const objectStore = db.createObjectStore('myFacebookStore', {
-      keyPath: 'id',
+  if (request.message === 'verifyData') {
+    console.log('verifyData');
+    const text = request.text;
+    chrome.runtime.sendMessage({ message: 'verify' }, function (response) {
+      console.log('response', response);
     });
-    console.log(objectStore);
-  };
-
-  // Save the data to the database
-  request.onsuccess = function (event: any) {
-    const db = event.target.result;
-    const transaction = db.transaction(['myFacebookStore'], 'readwrite');
-    const objectStore = transaction.objectStore('myFacebookStore');
-
-    objectStore.add(data);
-  };
-}
+    sendResponse({
+      data: `We verified the following data: ${text}  and its correct!`,
+    });
+  }
+});

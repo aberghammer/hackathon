@@ -1,0 +1,2 @@
+chrome.runtime.onInstalled.addListener((()=>{console.log("I just installed my chrome exteniosn")})),chrome.runtime.onMessage.addListener((function(e,o){return console.log(e),!0})),chrome.runtime.onMessage.addListener((function(e,o,n){if("getData"===e.message&&n({data:"Here's the data you asked for!"}),"verifyData"===e.message){console.log("verifyData");const o=e.text;chrome.runtime.sendMessage({message:"verify"},(function(e){console.log("response",e)})),n({data:`We verified the following data: ${o}  and its correct!`})}}));
+//# sourceMappingURL=background.js.map
