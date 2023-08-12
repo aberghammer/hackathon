@@ -166,9 +166,9 @@ export default function SendText() {
     }
 
     return (
-        <main className="flex items-center justify-center px-4 space-x-4">
+        <main className="flex flex-col lg:flex-row items-center justify-center px-4 space-x-4 space-y-4 sm:space-y-0">
             <DeployingModal isOpen={isOpen} />
-            <div className='flex flex-col justify-center bg-white p-12 rounded-xl shadow-lg w-1/3'>
+            <div className='flex flex-col justify-center bg-white lg:p-12 rounded-xl shadow-lg w-full p-8 md:1/2 lg:w-1/3'>
                 <h1 className="text-2xl font-bold mb-8 text-center text-blue-900">Welcome to Our Platform</h1>
                 <div className='flex flex-col'>
                     <div className="mb-8">
@@ -190,7 +190,7 @@ export default function SendText() {
 
             </div>
 
-            <div className='flex flex-col justify-center items-center w-1/3'>
+            <div className='flex flex-col justify-center items-center w-full lg:w-1/3'>
                 <Image src={imageData} alt="My NFT" width={800} height={800} />
 
             </div>
