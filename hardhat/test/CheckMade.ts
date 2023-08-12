@@ -74,6 +74,16 @@ describe("CheckMade Tests", () => {
 
         });
 
+        it('A CheckMate should be generated for the signer - also for the call with Metadata', async function () {
+            const { checkMade, checkMate, addr1 } = await loadFixture(deployTokenFixture);
+            
+            const hash = ethers.keccak256(ethers.toUtf8Bytes("Test"));
+            await checkMade.connect(addr1).createCheckWithMetaData(hash, "url", "description", [])
+            expect(await checkMate.connect(addr1).balanceOf(addr1)).to.be.equal(1);
+
+
+        });
+
         it('A CheckMate should start at the lowes level', async function () {
             const { checkMade, checkMate, addr1 } = await loadFixture(deployTokenFixture);
             

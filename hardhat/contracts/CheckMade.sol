@@ -48,6 +48,7 @@ event CheckCreated(address indexed _from, bytes32 indexed _hash);
         require(hashToAddress[_hash] == address(0), "Check already exists");
         hashToAddress[_hash] = msg.sender;
         hashToCheckMetaData[_hash] = CheckMetaData(url, description, referenceHashes);
+        checkMate.upgradeCheckMate(msg.sender);
         emit CheckCreated(msg.sender, _hash);
     }
 
