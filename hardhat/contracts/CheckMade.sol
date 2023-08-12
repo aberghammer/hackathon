@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
+import "./CheckMate.sol";
 
 
 contract CheckMade {
@@ -13,7 +14,13 @@ event CheckCreated(address indexed _from, bytes32 indexed _hash);
         bytes32[] referenceHashes;
     }
 
-    constructor() {}
+    CheckMate public checkMate;
+
+    constructor() {
+        checkMate = new CheckMate(address(this));
+    }
+
+
 
     mapping(bytes32 => address) public hashToAddress;
     mapping(bytes32 => CheckMetaData) public hashToCheckMetaData;
@@ -30,6 +37,7 @@ event CheckCreated(address indexed _from, bytes32 indexed _hash);
         require(hashToAddress[_hash] == address(0), "Check already exists");
         hashToAddress[_hash] = msg.sender;
         hashToCheckMetaData[_hash] = CheckMetaData("", "", new bytes32[](0));
+        checkMate.upgradeCheckMate(msg.sender);
         emit CheckCreated(msg.sender, _hash);
     }
 
